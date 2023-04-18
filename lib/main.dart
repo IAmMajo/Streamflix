@@ -1,24 +1,45 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-void main() => runApp(const ExampleApp());
+import 'color_schemes.g.dart';
 
-class ExampleApp extends StatelessWidget {
-  const ExampleApp({super.key});
+void main() {
+  LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(
+        ['Roboto'], await rootBundle.loadString('assets/licenses/Roboto.txt'));
+  });
+  runApp(const StreamflixApp());
+}
+
+class StreamflixApp extends StatelessWidget {
+  static final _theme = ThemeData(
+    colorScheme: lightColorScheme,
+    useMaterial3: true,
+    fontFamily: 'Roboto',
+    splashFactory: kIsWeb ? InkRipple.splashFactory : InkSparkle.splashFactory,
+  );
+
+  const StreamflixApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: NavigationExample());
+    return MaterialApp(
+      home: const Navigation(),
+      theme: _theme,
+      darkTheme: _theme.copyWith(colorScheme: darkColorScheme),
+    );
   }
 }
 
-class NavigationExample extends StatefulWidget {
-  const NavigationExample({super.key});
+class Navigation extends StatefulWidget {
+  const Navigation({super.key});
 
   @override
-  State<NavigationExample> createState() => _NavigationExampleState();
+  State<Navigation> createState() => _NavigationState();
 }
 
-class _NavigationExampleState extends State<NavigationExample> {
+class _NavigationState extends State<Navigation> {
   int currentPageIndex = 0;
 
   @override
