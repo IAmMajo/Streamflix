@@ -1,4 +1,4 @@
-# streamflix
+# Streamflix
 
 Ein Dashboard für alle Streamingdienste.
 
