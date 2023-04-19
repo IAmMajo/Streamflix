@@ -1,24 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_symbols_icons/outlined.dart';
 
 import 'color_schemes.g.dart';
+import 'pages/home.dart';
+import 'pages/lists.dart';
+import 'pages/search.dart';
+import 'pages/settings.dart';
+import 'pages/soon.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
     yield LicenseEntryWithLineBreaks(
-        ['Roboto'], await rootBundle.loadString('assets/licenses/Roboto.txt'));
+      ['Roboto'],
+      await rootBundle.loadString('assets/licenses/Roboto.txt'),
+    );
   });
   runApp(const StreamflixApp());
 }
 
 class StreamflixApp extends StatelessWidget {
-  static final _theme = ThemeData(
-    colorScheme: lightColorScheme,
-    useMaterial3: true,
-    fontFamily: 'Roboto',
-    splashFactory: kIsWeb ? InkRipple.splashFactory : InkSparkle.splashFactory,
-  );
+  static InteractiveInkFeatureFactory get splashFactory =>
+      kIsWeb ? InkRipple.splashFactory : InkSparkle.splashFactory;
 
   const StreamflixApp({super.key});
 
@@ -26,8 +30,19 @@ class StreamflixApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: const Navigation(),
-      theme: _theme,
-      darkTheme: _theme.copyWith(colorScheme: darkColorScheme),
+      theme: ThemeData(
+        colorScheme: lightColorScheme,
+        useMaterial3: true,
+        fontFamily: 'Roboto',
+        splashFactory: splashFactory,
+      ),
+      darkTheme: ThemeData(
+        colorScheme: darkColorScheme,
+        useMaterial3: true,
+        fontFamily: 'Roboto',
+        iconTheme: const IconThemeData(grade: -25),
+        splashFactory: splashFactory,
+      ),
     );
   }
 }
@@ -54,36 +69,39 @@ class _NavigationState extends State<Navigation> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            icon: Icon(Icons.explore),
-            label: 'Explore',
+            selectedIcon: Icon(MaterialSymbols.home, grade: 200, fill: 1),
+            icon: Icon(MaterialSymbols.home),
+            label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.commute),
-            label: 'Commute',
+            selectedIcon: Icon(MaterialSymbols.search, grade: 200),
+            icon: Icon(MaterialSymbols.search),
+            label: 'Suche',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.bookmark),
-            icon: Icon(Icons.bookmark_border),
-            label: 'Saved',
+            selectedIcon: Icon(MaterialSymbols.schedule, grade: 200, fill: 1),
+            icon: Icon(MaterialSymbols.schedule),
+            label: 'Bald',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(MaterialSymbols.list, grade: 200),
+            icon: Icon(MaterialSymbols.list),
+            label: 'Listen',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(MaterialSymbols.settings, grade: 200, fill: 1),
+            icon: Icon(MaterialSymbols.settings),
+            label: 'Optionen',
           ),
         ],
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
-      body: <Widget>[
-        Container(
-          color: Colors.red,
-          alignment: Alignment.center,
-          child: const Text('Page 1'),
-        ),
-        Container(
-          color: Colors.green,
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
-        Container(
-          color: Colors.blue,
-          alignment: Alignment.center,
-          child: const Text('Page 3'),
-        ),
+      body: const <Widget>[
+        HomePage(),
+        SearchPage(),
+        SoonPage(),
+        ListsPage(),
+        SettingsPage(),
       ][currentPageIndex],
     );
   }
