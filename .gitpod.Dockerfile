@@ -7,3 +7,7 @@ RUN brew tap leoafarias/fvm && \
     fvm config --cache-path /workspace/.fvm
 
 ENV PUB_CACHE=/workspace/.pub
+
+ENV VOLTA_HOME=/workspace/.volta
+
+ENV PATH="$VOLTA_HOME/bin:$PATH"
