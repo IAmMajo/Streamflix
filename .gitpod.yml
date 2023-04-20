@@ -1,0 +1,32 @@
+
+image:
+  file: .gitpod.Dockerfile
+ports:
+- port: 8080
+  onOpen: open-preview
+  visibility: public
+  name: Webserver
+- port: 0-65535
+  onOpen: ignore
+tasks:
+- name: Webserver
+  init: |
+    fvm install
+    fvm flutter config --no-analytics
+    fvm flutter pub get
+  command: fvm flutter run -d web-server --web-port=8080
+
+vscode:
+  extensions:
+    - Dart-Code.flutter
+    - EditorConfig.EditorConfig
+    - ms-azuretools.vscode-docker
+    - GitHub.vscode-pull-request-github
+    - eamodio.gitlens
+
+github:
+  prebuilds:
+    branches: true
+    pullRequestsFromForks: true
+    addBadge: true
+    addCheck: prevent-merge-on-error
