@@ -1,0 +1,25 @@
+on: push
+name: Fix and format code
+permissions:
+  contents: read
+  deployments: write
+jobs:
+  fix-and-format-code:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3.5.2
+      - uses: volta-cli/action@v4.0.0
+      - run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew tap leoafarias/fvm
+          brew install fvm
+          fvm install
+          fvm flutter pub get
+          fvm dart fix --apply
+          fvm dart format --fix lib
+          npm ci
+          npx prettier --write .
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@noreply.github.com'
+          git commit -am "Fix and format code"
+          git push
