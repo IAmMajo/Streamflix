@@ -1,8 +1,7 @@
 on: push
 name: Fix and format code
 permissions:
-  contents: read
-  deployments: write
+  contents: write
 jobs:
   fix-and-format-code:
     runs-on: ubuntu-22.04
