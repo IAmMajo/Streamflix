@@ -12,10 +12,11 @@ jobs:
       - run: |
           npm ci
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew analytics off
           brew tap leoafarias/fvm
           brew install fvm
-          fvm install
-          fvm flutter build web --web-renderer=canvaskit
+          fvm install -s
+          fvm flutter build web --suppress-analytics --web-renderer=canvaskit
       - uses: cloudflare/pages-action@v1.4.1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
