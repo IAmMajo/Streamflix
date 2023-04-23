@@ -15,10 +15,12 @@ jobs:
       - uses: volta-cli/action@v4.0.0
       - run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew analytics off
           brew tap leoafarias/fvm
           brew install fvm
-          fvm install
-          fvm flutter pub get
+          fvm install -s
+          fvm flutter pub get --suppress-analytics
+          fvm dart --disable-analytics
           fvm dart fix --apply
           fvm dart format --fix lib
           npm ci
